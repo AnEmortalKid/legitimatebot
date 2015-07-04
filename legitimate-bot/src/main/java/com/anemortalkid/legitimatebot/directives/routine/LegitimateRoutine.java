@@ -1,10 +1,11 @@
-package com.anemortalkid.legitimatebot.directives;
+package com.anemortalkid.legitimatebot.directives.routine;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import com.anemortalkid.legitimatebot.LegitimateBot;
+import com.anemortalkid.legitimatebot.directives.ILegitimateDirective;
 
 /**
  * A {@link LegitimateRoutine} is a list of directives that a

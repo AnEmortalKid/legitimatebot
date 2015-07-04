@@ -5,7 +5,7 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 
 import com.anemortalkid.legitimatebot.directives.ILegitimateDirective;
-import com.anemortalkid.legitimatebot.directives.LegitimateRoutine;
+import com.anemortalkid.legitimatebot.directives.routine.LegitimateRoutine;
 
 public class LegitimateBot {
 

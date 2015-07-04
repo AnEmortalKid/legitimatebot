@@ -36,7 +36,7 @@ public class LegitimateKeyboardUtilities {
 	return new LegitimateCommandKeyCombination(modifiers, keys);
     }
 
-    public static List<LegitimateCommandKeyCombination> getCombinationsForSimpleString(String string) {
+    public static List<LegitimateCommandKeyCombination> getCombinationsForTextString(String string) {
 	final List<LegitimateCommandKeyCombination> combinations = new ArrayList<LegitimateCommandKeyCombination>();
 
 	for (final Character c : string.toCharArray()) {
@@ -47,6 +47,12 @@ public class LegitimateKeyboardUtilities {
 	LegitimateCommandKeyCombination merged = null;
 	LegitimateCommandKeyCombination nextCombination = null;
 	int lookaheadIndex = 0;
+
+	// can't do much
+	if (combinations.size() < 2) {
+	    return combinations;
+	}
+
 	for (int i = 0; i < combinations.size(); i++) {
 
 	    if (merged == null) {
