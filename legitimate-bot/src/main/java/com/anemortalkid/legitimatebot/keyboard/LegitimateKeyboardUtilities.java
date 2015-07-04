@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class LegitimateKeyboardUtilities {
 
-    static LegitimateCommandKeyCombination getCombinationForCharacter(Character character) {
+    public static LegitimateCommandKeyCombination getCombinationForCharacter(Character character) {
 
 	final int extendedKeyCodeForChar = KeyEvent.getExtendedKeyCodeForChar(character);
 
@@ -31,11 +31,12 @@ public class LegitimateKeyboardUtilities {
 	return null;
     }
 
-    static LegitimateCommandKeyCombination getCommandKeyCombination(int[] modifiers, int... keys) {
+    public static LegitimateCommandKeyCombination getCommandKeyCombination(int[] modifiers,
+	    int... keys) {
 	return new LegitimateCommandKeyCombination(modifiers, keys);
     }
 
-    static List<LegitimateCommandKeyCombination> getCombinationsForSimpleString(String string) {
+    public static List<LegitimateCommandKeyCombination> getCombinationsForSimpleString(String string) {
 	final List<LegitimateCommandKeyCombination> combinations = new ArrayList<LegitimateCommandKeyCombination>();
 
 	for (final Character c : string.toCharArray()) {
@@ -71,14 +72,15 @@ public class LegitimateKeyboardUtilities {
 	return mergedList;
     }
 
-    static boolean canMerge(LegitimateCommandKeyCombination kc1, LegitimateCommandKeyCombination kc2) {
+    public static boolean canMerge(LegitimateCommandKeyCombination kc1,
+	    LegitimateCommandKeyCombination kc2) {
 	if (kc1 == null || kc2 == null) {
 	    return false;
 	}
 	return Arrays.equals(kc1.getModifierKeys(), kc2.getModifierKeys());
     }
 
-    static LegitimateCommandKeyCombination merge(LegitimateCommandKeyCombination kc1,
+    public static LegitimateCommandKeyCombination merge(LegitimateCommandKeyCombination kc1,
 	    LegitimateCommandKeyCombination kc2) {
 
 	final int kc1Length = kc1.getKeys().length;
