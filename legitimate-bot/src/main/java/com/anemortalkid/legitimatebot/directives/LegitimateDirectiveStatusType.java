@@ -9,14 +9,24 @@ package com.anemortalkid.legitimatebot.directives;
  */
 public enum LegitimateDirectiveStatusType {
 
-    /**
-     * Indicates that the {@link ILegitimateDirective} is running
-     */
-    RUNNING,
+	/**
+	 * Indicates that the {@link ILegitimateDirective} is running
+	 */
+	RUNNING,
 
-    /**
-     * Indicates that the {@link ILegitimateDirective} is done running
+	/**
+     * 
      */
-    COMPLETE,
+	DELAYING,
+
+	/**
+	 * Repeating
+	 */
+	REPEATING,
+
+	/**
+	 * Indicates that the {@link ILegitimateDirective} is done running
+	 */
+	COMPLETE,
 
 }

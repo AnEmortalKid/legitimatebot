@@ -10,52 +10,60 @@ import java.util.List;
  */
 public interface ILegitimateDirective {
 
-    /**
-     * The name of this directive
-     * 
-     * @return
-     */
-    String getDirectiveName();
+	/**
+	 * The name of this directive
+	 * 
+	 * @return
+	 */
+	String getDirectiveName();
 
-    /**
-     * Runs the given directive on a robot
-     */
-    void runDirective(Robot robot);
+	/**
+	 * Runs the given directive on a robot
+	 */
+	void runDirective(Robot robot);
 
-    /**
-     * Runs a directive and notifies of the status of the directive
-     * 
-     * @param robot
-     *            the robot to run the directive on
-     */
-    default void runDirectiveAndNotify(Robot robot) {
-	getStatusListeners().forEach(
-		listener -> listener.notifyDirectiveStatusChanged(new LegitimateDirectiveStatus(
-			getDirectiveName(), LegitimateDirectiveStatusType.RUNNING)));
-	runDirective(robot);
-	getStatusListeners().forEach(
-		listener -> listener.notifyDirectiveStatusChanged(new LegitimateDirectiveStatus(
-			getDirectiveName(), LegitimateDirectiveStatusType.COMPLETE)));
-    }
+	/**
+	 * Runs a directive and notifies the listeners that the directive is running
+	 * and when directive is complete
+	 * 
+	 * @param robot
+	 *            the robot to run the directive on
+	 */
+	default void runDirectiveAndNotify(Robot robot) {
+		notifyListeners(new LegitimateDirectiveStatus(getDirectiveName(),
+				LegitimateDirectiveStatusType.RUNNING));
+		runDirective(robot);
+		notifyListeners(new LegitimateDirectiveStatus(getDirectiveName(),
+				LegitimateDirectiveStatusType.COMPLETE));
+	}
 
-    /**
-     * Adds an {@link ILegitimateDirectiveStatusListener} to this
-     * {@link ILegitimateDirective}
-     * 
-     * @param directiveStatusListener
-     *            the listener that should receive notifications from the
-     *            directive
-     */
-    void addDirectiveStatusListener(ILegitimateDirectiveStatusListener directiveStatusListener);
+	/**
+	 * Adds an {@link ILegitimateDirectiveStatusListener} to this
+	 * {@link ILegitimateDirective}
+	 * 
+	 * @param directiveStatusListener
+	 *            the listener that should receive notifications from the
+	 *            directive
+	 */
+	void addDirectiveStatusListener(
+			ILegitimateDirectiveStatusListener directiveStatusListener);
 
-    /**
-     * Removes the given {@link ILegitimateDirectiveStatusListener} from this
-     * {@link ILegitimateDirective}
-     * 
-     * @param directiveStatusListener
-     *            the listener that should stop listening to this directive
-     */
-    void removeDirectiveStatusListener(ILegitimateDirectiveStatusListener directiveStatusListener);
+	/**
+	 * Removes the given {@link ILegitimateDirectiveStatusListener} from this
+	 * {@link ILegitimateDirective}
+	 * 
+	 * @param directiveStatusListener
+	 *            the listener that should stop listening to this directive
+	 */
+	void removeDirectiveStatusListener(
+			ILegitimateDirectiveStatusListener directiveStatusListener);
 
-    List<ILegitimateDirectiveStatusListener> getStatusListeners();
+	List<ILegitimateDirectiveStatusListener> getStatusListeners();
+
+	default void notifyListeners(LegitimateDirectiveStatus directiveStatus) {
+		getStatusListeners().forEach(
+				listener -> listener
+						.notifyDirectiveStatusChanged(directiveStatus));
+	}
+
 }

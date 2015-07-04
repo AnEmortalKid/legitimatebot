@@ -5,52 +5,57 @@ import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anemortalkid.legitimatebot.directives.AbstractLegitimateDirective;
 import com.anemortalkid.legitimatebot.directives.DefaultSysoutStatusListener;
 import com.anemortalkid.legitimatebot.directives.ILegitimateDirective;
+import com.anemortalkid.legitimatebot.directives.LegitimateDirectiveStatus;
+import com.anemortalkid.legitimatebot.directives.LegitimateDirectiveStatusType;
 import com.anemortalkid.legitimatebot.directives.delay.LegitimateDelayDirective;
 import com.anemortalkid.legitimatebot.directives.delay.LegitimateGranularDelayDirective;
 import com.anemortalkid.legitimatebot.directives.keyboard.LegitimateTypeTextDirective;
 
-public class LegitimateSubroutineDirective extends AbstractLegitimateDirective {
+/**
+ * A {@link LegitimateRepeatableSubroutineDirective} is a
+ * {@link LegitimateSubroutineDirective} that will be repeated a number of
+ * iterations.
+ * 
+ * @author JM034719
+ *
+ */
+public class LegitimateRepeatableSubroutineDirective extends
+		LegitimateSubroutineDirective {
 
-	private final List<ILegitimateDirective> directives;
+	private int iterationCount;
 
-	public LegitimateSubroutineDirective(String directiveName,
-			List<ILegitimateDirective> directives) {
-		super(directiveName);
-		this.directives = new ArrayList<ILegitimateDirective>();
-		this.directives.addAll(directives);
+	/**
+	 * Constructs a {@link LegitimateRepeatableSubroutineDirective}
+	 * 
+	 * @param directiveName
+	 *            the name of the directive
+	 * @param directives
+	 *            the list of directives for this subroutine
+	 * @param iterationCount
+	 *            the number of times ot repeat the subroutine
+	 */
+	public LegitimateRepeatableSubroutineDirective(String directiveName,
+			List<ILegitimateDirective> directives, int iterationCount) {
+		super(directiveName, directives);
+		this.iterationCount = iterationCount;
 	}
 
 	@Override
 	public void runDirective(Robot robot) {
 		addStatusListenersToDirectives();
-		runInnerDirectivesWithNotification(robot);
+		LegitimateDirectiveStatus repeatStatus = new LegitimateDirectiveStatus(
+				getDirectiveName(), LegitimateDirectiveStatusType.REPEATING);
+		repeatStatus.setMaxIterations(iterationCount);
+		
+		for (int i = 0; i < iterationCount; i++) {
+			repeatStatus.setIterationNumber((i + 1));
+			notifyListeners(repeatStatus);
+			runInnerDirectivesWithNotification(robot);
+		}
+		
 		removeStatusListenersFromDirectives();
-	}
-
-	/**
-	 * calls {@link #runDirectiveAndNotify(Robot)} on each of the inner
-	 * directives contained in {@link #directives}
-	 * 
-	 * @param robot
-	 *            the robot to run the directives on
-	 */
-	protected void runInnerDirectivesWithNotification(Robot robot) {
-		directives.forEach(directive -> directive.runDirectiveAndNotify(robot));
-	}
-
-	protected void addStatusListenersToDirectives() {
-		getStatusListeners().forEach(
-				listener -> directives.forEach(d -> d
-						.addDirectiveStatusListener(listener)));
-	}
-
-	protected void removeStatusListenersFromDirectives() {
-		getStatusListeners().forEach(
-				listener -> directives.forEach(d -> d
-						.removeDirectiveStatusListener(listener)));
 	}
 
 	public static void main(String[] args) {
@@ -69,8 +74,8 @@ public class LegitimateSubroutineDirective extends AbstractLegitimateDirective {
 		directives.add(type1);
 		directives.add(type2);
 		directives.add(type3);
-		final LegitimateSubroutineDirective legitimateSubroutine = new LegitimateSubroutineDirective(
-				"type \"ABC\"", directives);
+		final LegitimateRepeatableSubroutineDirective legitimateSubroutine = new LegitimateRepeatableSubroutineDirective(
+				"type \"ABC\"", directives, 5);
 		final DefaultSysoutStatusListener dssl = new DefaultSysoutStatusListener();
 		legitimateSubroutine.addDirectiveStatusListener(dssl);
 		Robot robot = null;
@@ -79,9 +84,7 @@ public class LegitimateSubroutineDirective extends AbstractLegitimateDirective {
 			legitimateSubroutine.runDirective(robot);
 		} catch (final AWTException e) {
 			e.printStackTrace();
-		}
-
-		//
+		}//
 	}
 
 }
