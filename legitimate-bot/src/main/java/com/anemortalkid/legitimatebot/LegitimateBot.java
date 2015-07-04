@@ -1,57 +1,72 @@
 package com.anemortalkid.legitimatebot;
 
 import java.awt.AWTException;
-import java.awt.RenderingHints.Key;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import com.anemortalkid.legitimatebot.directives.ILegitimateDirective;
 import com.anemortalkid.legitimatebot.directives.LegitimateRoutine;
-import com.anemortalkid.legitimatebot.keyboard.LegitimateCommandKeyCombination;
-import com.anemortalkid.legitimatebot.keyboard.LegitimateKeyMappings;
 
 public class LegitimateBot {
 
-	private Robot robot;
-	private LegitimateRoutine routine;
+    private Robot robot;
+    private final LegitimateRoutine routine;
 
-	public LegitimateBot(LegitimateRoutine routine) {
-		this.routine = routine;
-	}
+    public LegitimateBot(LegitimateRoutine routine) {
+	this.routine = routine;
+    }
 
-	public void performRoutine() {
-		for (ILegitimateDirective directive : routine.getDirectives())
-			directive.runDirective(robot);
+    public void performRoutine() {
+	for (final ILegitimateDirective directive : routine.getDirectives()) {
+	    directive.runDirective(robot);
 	}
+    }
 
-	public static void main(String[] args) {
-		try {
-			Robot robot = new Robot();
-			robot.delay(2000);
-			type(robot, KeyEvent.getExtendedKeyCodeForChar('['));
-			type(robot, KeyEvent.getExtendedKeyCodeForChar(']'));
-			type(robot, KeyEvent.getExtendedKeyCodeForChar('~'));
-			type(robot, KeyEvent.getExtendedKeyCodeForChar('|'));
-			// Set<Entry<Character, CommandKeyCombination>> entrySet =
-			// KeyMappings[]
-			// .getSpecialKeys().entrySet();
-			// for (Entry<Character, CommandKeyCombination> entry : entrySet) {
-			// System.out.println("Typing '" + entry.getKey() + "'");
-			// CommandKeyCombination ckc = entry.getValue();
-			// CommandKeyCombination.typeKeyCombination(robot, ckc);
-			// }
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    public static void main(String[] args) {
+	try {
+	    final Robot robot = new Robot();
+	    robot.delay(2000);
+	    /**
+	     * <pre>
+	     * It is a Unicode space character (SPACE_SEPARATOR, LINE_SEPARATOR, or PARAGRAPH_SEPARATOR) 
+	     * but is not also a non-breaking space ('\u005Cu00A0', '\u005Cu2007', '\u005Cu202F'). 
+	     * It is '\u005Ct', U+0009 HORIZONTAL TABULATION. 
+	     * It is '\u005Cn', U+000A LINE FEED. 
+	     * It is '\u005Cu000B', U+000B VERTICAL TABULATION. 
+	     * It is '\u005Cf', U+000C FORM FEED. 
+	     * It is '\u005Cr', U+000D CARRIAGE RETURN. 
+	     * It is '\u005Cu001C', U+001C FILE SEPARATOR. 
+	     * It is '\u005Cu001D', U+001D GROUP SEPARATOR. 
+	     * It is '\u005Cu001E', U+001E RECORD SEPARATOR. 
+	     * It is '\u005Cu001F', U+001F UNIT SEPARATOR.
+	     * </pre>
+	     */
 
-	private static void type(Robot robot, int extendedKeyCodeForChar) {
-		robot.keyPress(extendedKeyCodeForChar);
-		robot.keyRelease(extendedKeyCodeForChar);
+	    type(robot, KeyEvent.getExtendedKeyCodeForChar('\u005Ct'));
+	    type(robot, KeyEvent.getExtendedKeyCodeForChar('\u005Cn'));
+	    type(robot, KeyEvent.getExtendedKeyCodeForChar('\n'));
+	    type(robot, KeyEvent.getExtendedKeyCodeForChar('\t'));
+	    type(robot, KeyEvent.getExtendedKeyCodeForChar(' '));
+
+	    // Set<Entry<Character, CommandKeyCombination>> entrySet =
+	    // KeyMappings[]
+	    // .getSpecialKeys().entrySet();
+	    // for (Entry<Character, CommandKeyCombination> entry : entrySet) {
+	    // System.out.println("Typing '" + entry.getKey() + "'");
+	    // CommandKeyCombination ckc = entry.getValue();
+	    // CommandKeyCombination.typeKeyCombination(robot, ckc);
+	    // }
+	} catch (final AWTException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+
 	}
+    }
+
+    private static void type(Robot robot, int extendedKeyCodeForChar) {
+	System.out.println("Typing: '" + (char) extendedKeyCodeForChar + "'");
+	robot.keyPress(extendedKeyCodeForChar);
+	robot.keyRelease(extendedKeyCodeForChar);
+    }
 
 }

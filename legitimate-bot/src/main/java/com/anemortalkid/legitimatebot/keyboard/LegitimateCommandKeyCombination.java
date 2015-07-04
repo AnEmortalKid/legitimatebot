@@ -1,40 +1,23 @@
 package com.anemortalkid.legitimatebot.keyboard;
 
-import java.awt.Robot;
+/**
+ * A {@link LegitimateCommandKeyCombination} represents a complex keystroke that
+ * requires some modifier keys (SHIFT,ALT,CONTROL,WINDOWS) and regular keys.
+ * 
+ * @author JMonterrubio
+ *
+ */
+public class LegitimateCommandKeyCombination extends LegitimateKeyCombination {
 
-public class LegitimateCommandKeyCombination {
+    private final int[] modifierKeys;
 
-	private int[] keyCombinations;
-	private int[] modifierKeys;
+    public LegitimateCommandKeyCombination(int[] modifierKeys, int[] keys) {
+	super(keys);
+	this.modifierKeys = modifierKeys;
+    }
 
-	public LegitimateCommandKeyCombination(int[] modifierKeys, int[] keyCombinations) {
-		this.modifierKeys = modifierKeys;
-		this.keyCombinations = keyCombinations;
-	}
-
-	public int[] getModifierKeys() {
-		return modifierKeys;
-	}
-
-	public int[] getKeyCombinations() {
-		return keyCombinations;
-	}
-
-	public static void typeKeyCombination(Robot robot,
-			LegitimateCommandKeyCombination commandKeyCombination) {
-
-		// hold modifiers down
-		for (int modifierKey : commandKeyCombination.getModifierKeys()) {
-			robot.keyPress(modifierKey);
-		}
-
-		for (int keyCode : commandKeyCombination.getKeyCombinations()) {
-			robot.keyPress(keyCode);
-			robot.keyRelease(keyCode);
-		}
-
-		for (int modifierKey : commandKeyCombination.getModifierKeys()) {
-			robot.keyRelease(modifierKey);
-		}
-	}
+    @Override
+    public int[] getModifierKeys() {
+	return modifierKeys;
+    }
 }

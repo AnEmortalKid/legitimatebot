@@ -9,9 +9,9 @@ import java.awt.Robot;
  */
 public interface ILegitimateDirective {
 
-	/**
-	 * Runs the given directive on a robot
-	 */
-	void runDirective(Robot robot);
+    /**
+     * Runs the given directive on a robot
+     */
+    void runDirective(Robot robot);
 
 }
