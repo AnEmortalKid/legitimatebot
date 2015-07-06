@@ -18,7 +18,7 @@ public class LegitimateBot {
 
     public void performRoutine() {
 	for (final ILegitimateDirective directive : routine.getDirectives()) {
-	    directive.runDirective(robot);
+	    directive.runDirectiveAndNotify(robot);
 	}
     }
 
